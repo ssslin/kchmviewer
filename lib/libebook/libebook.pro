@@ -29,4 +29,4 @@ INCLUDEPATH += ../../src
 QT += widgets
 
 # Only for Creator build
-#INCLUDEPATH += C:/Users/Test/Documents/builder/extralibs/x64/include
+INCLUDEPATH += /usr/local/include

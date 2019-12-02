@@ -1,4 +1,5 @@
 INCLUDEPATH += ../lib/libebook
+INCLUDEPATH += /usr/local/include
 HEADERS += config.h \
     dialog_chooseurlfromlist.h \
     dialog_setup.h \
@@ -40,6 +41,7 @@ SOURCES += config.cpp \
     textencodings.cpp \
     treeitem_toc.cpp \
     treeitem_index.cpp
+LIBS += -L/usr/local/lib
 LIBS += -lchm -lzip
 TARGET = ../bin/kchmviewer
 CONFIG += threads \
@@ -81,7 +83,8 @@ macx: {
     HEADERS += kchmviewerapp.h
     SOURCES += kchmviewerapp.cpp
     QMAKE_INFO_PLIST=resources/Info.plist
-    QMAKE_POST_LINK += cp resources/*.icns ${DESTDIR}/kchmviewer.app/Contents/Resources;
+    #QMAKE_POST_LINK += cp resources/*.icns ${DESTDIR}/kchmviewer.app/Contents/Resources;
+    ICON = resources/kchmviewer.icns
     LIBS += ../lib/libebook/libebook.a
     POST_TARGETDEPS += ../lib/libebook/libebook.a
 }
@@ -102,7 +105,7 @@ win32-*: {
     LIBS += -lwsock32 -loleaut32
 }
 
-unix:!macx: {
+unix: {
 
     QT += dbus
     HEADERS += dbus_interface.h
@@ -114,20 +117,20 @@ unix:!macx: {
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     # Qt 5
-    greaterThan(QT_MINOR_VERSION, 5) {
-        # Qt 5.6+
-        error("You use Qt5.6+ - QWebEngine is not yet suitable for kchmviewer and is not supported")
-        QT += webengine webenginewidgets
-        DEFINES += USE_WEBENGINE
-        SOURCES += viewwindow_webengine.cpp dataprovider_qwebengine.cpp
-        HEADERS += dataprovider_qwebengine.h viewwindow_webengine.h
-    } else {
+#     greaterThan(QT_MINOR_VERSION, 5) {
+#         # Qt 5.6+
+#         error("You use Qt5.6+ - QWebEngine is not yet suitable for kchmviewer and is not supported")
+#         QT += webengine webenginewidgets
+#         DEFINES += USE_WEBENGINE
+#         SOURCES += viewwindow_webengine.cpp dataprovider_qwebengine.cpp
+#         HEADERS += dataprovider_qwebengine.h viewwindow_webengine.h
+#     } else {
         # Qt 5.0-5.5
         QT += webkit webkitwidgets
         DEFINES += USE_WEBKIT
         SOURCES += viewwindow_webkit.cpp dataprovider_qwebkit.cpp
         HEADERS += dataprovider_qwebkit.h viewwindow_webkit.h
-    }
+#     }
 } else {
     message("Qt4 is not supported anymore, please do not report any errors")
     QT += webkit webkitwidgets

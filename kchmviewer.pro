@@ -1,4 +1,4 @@
 SUBDIRS += lib src
 TEMPLATE = subdirs 
-CONFIG += debug
+CONFIG += release
 src.depends = lib

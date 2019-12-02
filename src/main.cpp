@@ -31,7 +31,7 @@
 	#include <kaboutdata.h>
 #endif
 
-#if defined (Q_WS_MAC)
+#if defined (Q_OS_OSX)
         #include "kchmviewerapp.h"
 #else
         typedef QApplication  KchmviewerApp;
@@ -42,6 +42,10 @@ MainWindow * mainWindow;
 
 int main( int argc, char ** argv )
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
+
 #if defined (USE_KDE)
     KAboutData aboutdata ( "kchmviewer",
                            QByteArray(),
@@ -70,7 +74,7 @@ int main( int argc, char ** argv )
 	// Configuration
 	pConfig = new Config();
 
-#if !defined (WIN32) && !defined(Q_WS_MAC)
+#if !defined (WIN32)
 	if ( QDBusConnection::sessionBus().isConnected() )
 	{
 		if ( QDBusConnection::sessionBus().registerService(SERVICE_NAME) )
